@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import { init } from "./db/database";
 import { useEffect } from "react";
+import AllTransactions from "./containers/AllTransactions";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,11 +60,11 @@ export default function App() {
             options={{ title: "Home", animation: "slide_from_bottom" }}
           />
           <Stack.Screen name="Add" component={Add} options={{ title: "Add" }} />
-          {/* <Stack.Screen
-          name="AllTransactions"
-          component={}
-          options={{ title: "All Transactions" }}
-        /> */}
+          <Stack.Screen
+            name="AllTransactions"
+            component={AllTransactions}
+            options={{ title: "All Transactions" }}
+          />
           <Stack.Screen
             name="TransDetails"
             component={TransactionDetails}

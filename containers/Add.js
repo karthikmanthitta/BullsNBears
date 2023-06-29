@@ -50,22 +50,20 @@ export const Add = () => {
         taxAmt,
         brokerage,
       };
-      console.log(payload);
 
       await addTransaction(payload)
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error));
-
-      Alert.alert("Success", "Transaction added successfully", [
-        { text: "OK", onPress: () => navigation.navigate("Home") },
-      ]);
-      // axios
-      //   .post(
-      //     "https://stock-tracker-test-default-rtdb.firebaseio.com/test.json",
-      //     payload
-      //   )
-      //   .then((response) => console.log(response))
-      //   .catch((error) => console.log(error));
+        .then((response) => {
+          Alert.alert("Success", "Transaction added successfully", [
+            { text: "OK", onPress: () => navigation.navigate("Home") },
+          ]);
+        })
+        .catch((error) => {
+          Alert.alert(
+            "Failed",
+            "Failure in submission. Please try again after some time",
+            [{ text: "OK", onPress: () => navigation.navigate("Home") }]
+          );
+        });
     } else {
       Alert.alert("Error", "Please check all inputs");
     }

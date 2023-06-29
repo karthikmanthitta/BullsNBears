@@ -1,15 +1,18 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../global/styles";
 import CustomButton from "../components/button";
 import { TransactionCard } from "../components/transactionCard";
 import { transactions as dummy } from "../dummy";
 import { useSelector, useDispatch } from "react-redux";
-import { useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { setTransactions } from "../store/transaction";
 import { fetchTransactions } from "../db/database";
+import { useIsFocused } from "@react-navigation/native";
 
 export const Home = () => {
+  const [recentTrx, setRecentTrx] = useState([]);
+  const isFocused = useIsFocused();
   const allTransactions = useSelector(
     (state) => state.transactions.transactions
   );
@@ -17,17 +20,32 @@ export const Home = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       await fetchTransactions()
-        .then((response) =>
-          dispatch(setTransactions({ transactions: response }))
-        )
-        .catch((error) => console.log(error));
+        .then((response) => {
+          dispatch(setTransactions({ transactions: sortData(response) }));
+          getRecentTransactions(sortData(response));
+        })
+        .catch((error) =>
+          Alert.alert("Error", "Error while fetching transactions")
+        );
     }
 
-    fetchData();
-  }, [allTransactions]);
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+
+  const sortData = (data) => {
+    return data.sort((a, b) => new Date(b.date) - new Date(a.date));
+  };
+
+  const getRecentTransactions = (trx) => {
+    setRecentTrx(
+      trx.filter((x) => new Date() - new Date(x.date) < 1000 * 60 * 60 * 24 * 7)
+    );
+  };
 
   const addHandler = () => {
     let names = [];
@@ -41,7 +59,7 @@ export const Home = () => {
         <CustomButton
           title="All transactions"
           onPress={() => {
-            navigation.navigate("AllTrans");
+            navigation.navigate("AllTransactions");
           }}
         />
         <CustomButton title="Add new" onPress={addHandler} />
@@ -55,7 +73,7 @@ export const Home = () => {
           paddingBottom: 20,
         }}
       >
-        {allTransactions.map((entry) => (
+        {recentTrx.map((entry) => (
           <TransactionCard
             name={entry.name}
             date={entry.date}

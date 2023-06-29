@@ -6,6 +6,17 @@ import { useRoute } from "@react-navigation/native";
 export const TransactionDetails = () => {
   const { params } = useRoute();
   const transaction = params.transaction;
+
+  const calculateShareValue = () => {
+    const [type, net, tax, bkg] = [
+      transaction.type,
+      transaction.net,
+      transaction.tax,
+      transaction.brokerage,
+    ];
+    return type.toUpperCase() === "BUY" ? net - tax - bkg : net + tax + bkg;
+  };
+
   return (
     <View style={GlobalStyles.container}>
       <View style={styles.formElem}>
@@ -27,8 +38,8 @@ export const TransactionDetails = () => {
         </View>
       </View>
       <View style={styles.formElem}>
-        <Text style={styles.text}>Net transaction amount</Text>
-        <Text style={styles.text}>{transaction.net}</Text>
+        <Text style={styles.text}>Share value</Text>
+        <Text style={styles.text}>{calculateShareValue()}</Text>
       </View>
       <View style={styles.flexRow}>
         <View style={styles.formElem2}>
@@ -39,6 +50,14 @@ export const TransactionDetails = () => {
           <Text style={styles.text}>Brokerage amt.</Text>
           <Text style={styles.text}>{transaction.brokerage}</Text>
         </View>
+      </View>
+      <View style={styles.formElem}>
+        <Text style={styles.text}>
+          {transaction.type.toUpperCase() === "BUY"
+            ? "Total amount spent"
+            : "Total amount received"}
+        </Text>
+        <Text style={styles.text}>{transaction.net}</Text>
       </View>
       {/* <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>
         <CustomButton

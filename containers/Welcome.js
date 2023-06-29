@@ -12,6 +12,7 @@ import CustomButton from "../components/button";
 import { GlobalStyles } from "../global/styles";
 import { GlobalColors } from "../global/colors";
 import axios from "axios";
+import { deleteTransactions } from "../db/database";
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -24,19 +25,15 @@ const Welcome = () => {
     navigation.navigate("ProfileSelection");
   };
 
-  testHandler = () => {
-    // axios
-    //   .get(
-    //     "https://stock-tracker-test-default-rtdb.firebaseio.com/test.json"
-    //   )
-    //   .then((response) => console.log(Object.values(response.data)));
-  };
+  async function testHandler() {
+    await deleteTransactions().then((response) => console.log("DELETED"));
+  }
 
   return (
     <View style={[GlobalStyles.container, styles.container]}>
       <Text style={styles.text}>Please proceed to profile selection</Text>
       <CustomButton onPress={pressHandler} title="Select profile" />
-      <CustomButton onPress={testHandler} title="TEST" />
+      {/* <CustomButton onPress={testHandler} title="TEST" /> */}
     </View>
   );
 };

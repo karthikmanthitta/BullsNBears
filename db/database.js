@@ -16,7 +16,7 @@ export function init() {
         tax REAL NOT NULL,
         brokerage REAL NOT NULL);`,
         [],
-        (_, result) => console.log("SUCCESS IN INIT"),
+        (_, result) => {},
         (_, error) => console.log("error")
       )
     );
@@ -55,6 +55,21 @@ export const addTransaction = (payload) => {
           payload.brokerage,
         ],
         (_, result) => resolve("SUCCESS"),
+        (_, error) => reject(error)
+      )
+    );
+  });
+
+  return promise;
+};
+
+export const deleteTransactions = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) =>
+      tx.executeSql(
+        `DELETE FROM TRANSACTIONS`,
+        [],
+        (_, result) => resolve(result.rows._array),
         (_, error) => reject(error)
       )
     );
