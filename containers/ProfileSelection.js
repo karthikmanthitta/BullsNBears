@@ -13,7 +13,7 @@ const ProfileSelection = () => {
   };
 
   selectionHandler = () => {
-    navigation.navigate("Home", { id: 10 });
+    navigation.navigate("Home");
   };
 
   return (

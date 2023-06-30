@@ -33,7 +33,7 @@ const Welcome = () => {
     <View style={[GlobalStyles.container, styles.container]}>
       <Text style={styles.text}>Please proceed to profile selection</Text>
       <CustomButton onPress={pressHandler} title="Select profile" />
-      {/* <CustomButton onPress={testHandler} title="TEST" /> */}
+      {/* <CustomButton onPress={testHandler} title="DELETE" /> */}
     </View>
   );
 };

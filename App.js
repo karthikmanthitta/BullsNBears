@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { registerRootComponent } from "expo";
 import Welcome from "./containers/Welcome";
@@ -10,16 +11,41 @@ import { Add } from "./containers/Add";
 import { TransactionDetails } from "./containers/TransactionDetails";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import { init } from "./db/database";
+import { dropPortfolioTable, dropTrxTable, init } from "./db/database";
 import { useEffect } from "react";
 import AllTransactions from "./containers/AllTransactions";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Portfolio from "./containers/Portfolio";
+import { GlobalColors } from "./global/colors";
+import { AddStock } from "./containers/AddStock";
 
 const Stack = createNativeStackNavigator();
+
+const Drawer = createDrawerNavigator();
+
+const DrawerNav = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        drawerStyle: { backgroundColor: GlobalColors.primary, paddingTop: 30 },
+        drawerInactiveTintColor: "white",
+        headerStyle: { backgroundColor: GlobalColors.primary },
+        headerTintColor: "white",
+        headerTitleAlign: "center",
+      }}
+    >
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Portfolio" component={Portfolio} />
+    </Drawer.Navigator>
+  );
+};
 
 export default function App() {
   useEffect(() => {
     async function initializeDb() {
       await init();
+      // await dropPortfolioTable();
+      // await dropTrxTable();
     }
 
     initializeDb();
@@ -56,10 +82,21 @@ export default function App() {
           />
           <Stack.Screen
             name="Home"
-            component={Home}
-            options={{ title: "Home", animation: "slide_from_bottom" }}
+            component={DrawerNav}
+            options={{
+              headerShown: false,
+            }}
           />
-          <Stack.Screen name="Add" component={Add} options={{ title: "Add" }} />
+          <Stack.Screen
+            name="Add"
+            component={Add}
+            options={{ title: "Add Transaction" }}
+          />
+          <Stack.Screen
+            name="AddStock"
+            component={AddStock}
+            options={{ title: "Add Stock" }}
+          />
           <Stack.Screen
             name="AllTransactions"
             component={AllTransactions}

@@ -1,23 +1,18 @@
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../global/styles";
 import CustomButton from "../components/button";
 import { TransactionCard } from "../components/transactionCard";
-import { transactions as dummy } from "../dummy";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { setTransactions } from "../store/transaction";
+import { setTransactions, setStockNames } from "../store/transaction";
 import { fetchTransactions } from "../db/database";
 import { useIsFocused } from "@react-navigation/native";
 
 export const Home = () => {
   const [recentTrx, setRecentTrx] = useState([]);
   const isFocused = useIsFocused();
-  const allTransactions = useSelector(
-    (state) => state.transactions.transactions
-  );
   const dispatch = useDispatch();
-  const { params } = useRoute();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -26,6 +21,7 @@ export const Home = () => {
         .then((response) => {
           dispatch(setTransactions({ transactions: sortData(response) }));
           getRecentTransactions(sortData(response));
+          setNames(response);
         })
         .catch((error) =>
           Alert.alert("Error", "Error while fetching transactions")
@@ -48,9 +44,13 @@ export const Home = () => {
   };
 
   const addHandler = () => {
-    let names = [];
-    allTransactions.forEach((tx) => names.push(tx.name));
-    navigation.navigate("Add", { names });
+    navigation.navigate("Add");
+  };
+
+  const setNames = (data) => {
+    let names = new Set();
+    data.forEach((tx) => names.add(tx.name));
+    dispatch(setStockNames({ names: [...names] }));
   };
 
   return (

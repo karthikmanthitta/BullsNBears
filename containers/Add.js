@@ -15,15 +15,13 @@ import CustomButton from "../components/button";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CalendarPicker from "react-native-calendar-picker";
 import { buyTrans, sellTrans } from "../utils/calc";
-import { v4 as uuid } from "uuid";
-import axios from "axios";
 import AutocompleteInput from "react-native-autocomplete-input";
 import { addTransaction } from "../db/database";
+import { useSelector } from "react-redux";
 
 export const Add = () => {
   const navigation = useNavigation();
-  const { params } = useRoute();
-  const datas = params.names;
+  const datas = useSelector((state) => state.transactions.stockNames);
   const [name, setName] = useState("");
   const [nameList, setNameList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
