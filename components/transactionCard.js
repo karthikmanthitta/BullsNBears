@@ -2,14 +2,20 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { GlobalColors } from "../global/colors";
 import Chip from "./chip";
 
-export const TransactionCard = ({ name, date, type, onPress }) => {
+export const TransactionCard = ({ name, date, type, onPress, ...props }) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={onPress}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={styles.text}>{name}</Text>
+        {props.isStockDetailsSection ? (
+          <Text style={styles.text}>
+            Transaction amount: {props.net.toLocaleString("en-IN")}
+          </Text>
+        ) : (
+          <Text style={styles.text}>{name}</Text>
+        )}
         <View style={styles.chip}>
           <Chip color={GlobalColors.purple} content={type.toUpperCase()} />
         </View>
@@ -30,7 +36,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     padding: 10,
-    fontSize: 18,
+    fontSize: 16,
   },
   pressed: { backgroundColor: "#12448a" },
   chip: { marginRight: 10 },

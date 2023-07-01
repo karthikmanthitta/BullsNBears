@@ -59,15 +59,6 @@ export const TransactionDetails = () => {
         </Text>
         <Text style={styles.text}>{transaction.net}</Text>
       </View>
-      {/* <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>
-        <CustomButton
-          title="Cancel"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <CustomButton title="Add" onPress={addTransactionHandler} />
-      </View> */}
     </View>
   );
 };

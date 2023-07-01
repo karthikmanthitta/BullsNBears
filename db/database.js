@@ -119,7 +119,22 @@ export const deleteTransactions = () => {
   return promise;
 };
 
-export const findStockById = (stockName) => {
+export const deletePortfolio = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) =>
+      tx.executeSql(
+        `DELETE FROM PORTFOLIO`,
+        [],
+        (_, result) => resolve(result.rows._array),
+        (_, error) => reject(error)
+      )
+    );
+  });
+
+  return promise;
+};
+
+export const findStockByName = (stockName) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) =>
       tx.executeSql(

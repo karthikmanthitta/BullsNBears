@@ -1,28 +1,38 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { GlobalColors } from "../global/colors";
+import { useNavigation } from "@react-navigation/native";
 
 export default PortfolioCard = ({ name, avg, qty, pl }) => {
+  const navigation = useNavigation();
+
+  const pressHandler = () => {
+    let obj = { name, quantity: qty, inv: +qty * +avg, pl };
+    navigation.navigate("StockDetails", { stock: obj });
+  };
+
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
-      // onPress={onPress}
+      onPress={pressHandler}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.text}>{name}</Text>
         <Text style={styles.text}>
           P&L:{" "}
-          {+pl > 0 ? (
-            <Text style={{ color: "green" }}>{+pl}</Text>
-          ) : +pl === 0 ? (
-            <Text>{+pl}</Text>
-          ) : (
-            <Text style={{ color: "red" }}>{+pl}</Text>
-          )}
+          <Text
+            style={{
+              color: pl !== null ? (pl > 0 ? "green" : "red") : "white",
+            }}
+          >
+            {pl === null || pl === 0 ? 0 : pl.toLocaleString("en-IN")}
+          </Text>
         </Text>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.text}>Quantity: {qty}</Text>
-        <Text style={styles.text}>Inv value: {+avg * +qty}</Text>
+        <Text style={styles.text}>
+          Inv value: {(+avg * +qty).toLocaleString("en-IN")}
+        </Text>
       </View>
     </Pressable>
   );
@@ -39,7 +49,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     padding: 10,
-    fontSize: 18,
+    fontSize: 16,
   },
   pressed: { backgroundColor: "#12448a" },
   chip: { marginRight: 10 },

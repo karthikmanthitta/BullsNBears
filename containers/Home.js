@@ -32,7 +32,7 @@ export const Home = () => {
 
     if (isFocused) {
       fetchData();
-      adjustPortfolio({})
+      // adjustPortfolio({})
     }
   }, [isFocused]);
 

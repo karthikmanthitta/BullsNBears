@@ -18,6 +18,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Portfolio from "./containers/Portfolio";
 import { GlobalColors } from "./global/colors";
 import { AddStock } from "./containers/AddStock";
+import { DbActions } from "./containers/DbActions";
+import StockDetails from "./containers/StockDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +38,7 @@ const DrawerNav = () => {
     >
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Portfolio" component={Portfolio} />
+      <Drawer.Screen name="DB-Actions" component={DbActions} />
     </Drawer.Navigator>
   );
 };
@@ -44,8 +47,6 @@ export default function App() {
   useEffect(() => {
     async function initializeDb() {
       await init();
-      // await dropPortfolioTable();
-      // await dropTrxTable();
     }
 
     initializeDb();
@@ -107,6 +108,14 @@ export default function App() {
             component={TransactionDetails}
             options={{
               title: "Transacation Details",
+              animation: "slide_from_right",
+            }}
+          />
+          <Stack.Screen
+            name="StockDetails"
+            component={StockDetails}
+            options={{
+              title: "Stock Details",
               animation: "slide_from_right",
             }}
           />
