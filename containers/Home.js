@@ -6,8 +6,9 @@ import { TransactionCard } from "../components/transactionCard";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { setTransactions, setStockNames } from "../store/transaction";
-import { fetchTransactions } from "../db/database";
+import { fetchStocks, fetchTransactions } from "../db/database";
 import { useIsFocused } from "@react-navigation/native";
+import { adjustPortfolio } from "../utils/calc";
 
 export const Home = () => {
   const [recentTrx, setRecentTrx] = useState([]);
@@ -21,17 +22,31 @@ export const Home = () => {
         .then((response) => {
           dispatch(setTransactions({ transactions: sortData(response) }));
           getRecentTransactions(sortData(response));
-          setNames(response);
+          setNames();
         })
-        .catch((error) =>
-          Alert.alert("Error", "Error while fetching transactions")
-        );
+        .catch((error) => {
+          console.log(error);
+          Alert.alert("Error", "Error while fetching transactions");
+        });
     }
 
     if (isFocused) {
       fetchData();
+      adjustPortfolio({})
     }
   }, [isFocused]);
+
+  const setNames = () => {
+    fetchStocks()
+      .then((response) => {
+        let names = [];
+        response.forEach((stock) => {
+          names.push({ id: stock.id, name: stock.name });
+        });
+        dispatch(setStockNames({ names }));
+      })
+      .catch((error) => console.log(error));
+  };
 
   const sortData = (data) => {
     return data.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -45,12 +60,6 @@ export const Home = () => {
 
   const addHandler = () => {
     navigation.navigate("Add");
-  };
-
-  const setNames = (data) => {
-    let names = new Set();
-    data.forEach((tx) => names.add(tx.name));
-    dispatch(setStockNames({ names: [...names] }));
   };
 
   return (

@@ -14,14 +14,16 @@ import { RadioButton } from "react-native-paper";
 import CustomButton from "../components/button";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CalendarPicker from "react-native-calendar-picker";
-import { buyTrans, sellTrans } from "../utils/calc";
+import { adjustPortfolio, buyTrans, sellTrans } from "../utils/calc";
 import AutocompleteInput from "react-native-autocomplete-input";
 import { addTransaction } from "../db/database";
 import { useSelector } from "react-redux";
 
 export const Add = () => {
   const navigation = useNavigation();
-  const datas = useSelector((state) => state.transactions.stockNames);
+  const datas = useSelector((state) => state.transactions.stockNames).map(
+    (stock) => stock.name
+  );
   const [name, setName] = useState("");
   const [nameList, setNameList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -54,6 +56,7 @@ export const Add = () => {
           Alert.alert("Success", "Transaction added successfully", [
             { text: "OK", onPress: () => navigation.navigate("Home") },
           ]);
+          adjustPortfolio(payload);
         })
         .catch((error) => {
           Alert.alert(

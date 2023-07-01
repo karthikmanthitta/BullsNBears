@@ -119,6 +119,51 @@ export const deleteTransactions = () => {
   return promise;
 };
 
+export const findStockById = (stockName) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) =>
+      tx.executeSql(
+        `SELECT * FROM PORTFOLIO WHERE name=?`,
+        [stockName],
+        (_, result) => resolve(result.rows._array),
+        (_, error) => reject(error)
+      )
+    );
+  });
+
+  return promise;
+};
+
+export const updatePortfolioAvg = (id, qty, avg) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) =>
+      tx.executeSql(
+        `UPDATE PORTFOLIO SET quantity=?, avg=? WHERE id=? `,
+        [qty, avg, id],
+        (_, result) => resolve("UPDATED AVG PRICE"),
+        (_, error) => reject(error)
+      )
+    );
+  });
+
+  return promise;
+};
+
+export const updatePortfolioPL = (id, qty, pl) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) =>
+      tx.executeSql(
+        `UPDATE PORTFOLIO SET quantity=?, pl=? WHERE id=?`,
+        [qty, pl, id],
+        (_, result) => resolve("UPDATED PL"),
+        (_, error) => reject(error)
+      )
+    );
+  });
+
+  return promise;
+};
+
 export const dropTrxTable = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) =>
