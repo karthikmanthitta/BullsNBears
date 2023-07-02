@@ -12,11 +12,11 @@ import { GlobalColors } from "../global/colors";
 import { useState } from "react";
 import { RadioButton } from "react-native-paper";
 import CustomButton from "../components/button";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import CalendarPicker from "react-native-calendar-picker";
 import { adjustPortfolio, buyTrans, sellTrans } from "../utils/calc";
 import AutocompleteInput from "react-native-autocomplete-input";
-import { addTransaction } from "../db/database";
+import { addTransaction, fetchStocks } from "../db/database";
 import { useSelector } from "react-redux";
 
 export const Add = () => {
@@ -36,7 +36,7 @@ export const Add = () => {
   const [error, setError] = useState({});
 
   async function addTransactionHandler() {
-    if (formIsValid()) {
+    if (await formIsValid()) {
       let netAmt =
         checked === "buy"
           ? buyTrans(totalAmt, taxAmt, brokerage)
@@ -65,12 +65,10 @@ export const Add = () => {
             [{ text: "OK", onPress: () => navigation.navigate("Home") }]
           );
         });
-    } else {
-      Alert.alert("Error", "Please check all inputs");
     }
   }
 
-  const formIsValid = () => {
+  async function formIsValid() {
     let err = {};
     if (name === undefined || name === "") {
       err = { ...err, name: true };
@@ -87,9 +85,37 @@ export const Add = () => {
     if (brokerage === undefined || brokerage === "") {
       err = { ...err, brokerage: true };
     }
+    const stocks = await fetchStocks();
+    const availableQty = stocks.filter((stock) => stock.name === name)[0]
+      ?.quantity;
+    if (
+      availableQty !== undefined &&
+      checked === "sell" &&
+      qty > availableQty
+    ) {
+      Alert.alert(
+        "Insufficient stocks",
+        `You have only ${availableQty} shares of ${name}`
+      );
+      err = { ...err, qty: true };
+    }
+    if (
+      checked === "sell" &&
+      (availableQty === undefined || availableQty === 0)
+    ) {
+      Alert.alert("Error", `You have no shares of ${name} to sell yet`);
+      err = { ...err, type: true };
+    }
+    if (taxAmt + brokerage > totalAmt) {
+      Alert.alert(
+        "Error",
+        "Sum of tax and brokerage cannot exceed total transaction amount"
+      );
+      err = { ...err, totalAmt: true, taxAmt: true, brokerage: true };
+    }
     setError(err);
     return Object.keys(err).length === 0;
-  };
+  }
 
   const filterData = (input) => {
     setNameList(
@@ -177,7 +203,10 @@ export const Add = () => {
           >
             <CalendarPicker
               width={350}
-              onDateChange={(date) => setDate(new Date(date).toDateString())}
+              onDateChange={(date) => {
+                setDate(new Date(date).toDateString());
+                setShowCalendar(false);
+              }}
               textStyle={{ color: "white" }}
               selectedDayColor="white"
               selectedDayTextColor={GlobalColors.primary}
@@ -189,7 +218,9 @@ export const Add = () => {
       </View>
       <View style={styles.flexRow}>
         <View style={styles.formElem2}>
-          <Text style={styles.text}>Type</Text>
+          <Text style={[styles.text, error.type && { color: "red" }]}>
+            Type
+          </Text>
           <View style={styles.flexRow}>
             <View style={styles.flexRow}>
               <RadioButton
@@ -198,7 +229,9 @@ export const Add = () => {
                 onPress={() => setChecked("buy")}
                 color={GlobalColors.primary}
               />
-              <Text style={styles.text}>Buy</Text>
+              <Text style={[styles.text, error.type && { color: "red" }]}>
+                Buy
+              </Text>
             </View>
             <View style={styles.flexRow}>
               <RadioButton
@@ -207,7 +240,9 @@ export const Add = () => {
                 onPress={() => setChecked("sell")}
                 color={GlobalColors.primary}
               />
-              <Text style={styles.text}>Sell</Text>
+              <Text style={[styles.text, error.type && { color: "red" }]}>
+                Sell
+              </Text>
             </View>
           </View>
         </View>
@@ -263,6 +298,13 @@ export const Add = () => {
           />
         </View>
       </View>
+      {Object.keys(error).length > 0 && (
+        <View style={[styles.formElem, { flex: 1 }]}>
+          <Text style={[styles.text, { color: "red" }]}>
+            Please check all inputs
+          </Text>
+        </View>
+      )}
       <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>
         <CustomButton
           title="Cancel"
