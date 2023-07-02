@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "simplee",
+    "name": "Bulls N Bears",
     "slug": "simplee",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.karthik.bullsnbears"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ebd5c682-7bd0-465d-b5cd-0f73a104dcd3"
+      }
     }
   }
 }

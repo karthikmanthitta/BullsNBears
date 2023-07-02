@@ -22,7 +22,7 @@ const Welcome = () => {
 
   return (
     <View style={[GlobalStyles.container, styles.container]}>
-      <Text style={styles.text}>About StockTracker</Text>
+      <Text style={styles.text}>About Bulls N Bears</Text>
       <Text style={styles.text}>
         A simple app created to track your portfolio. All you need to do is make
         an entry for every transaction carried out with the appropriate details.
