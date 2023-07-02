@@ -9,22 +9,24 @@ export default StockDetails = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
   const stock = params.stock;
-  const transactions = useSelector((state) =>
-    state.transactions.transactions.filter((trx) => trx.name === stock.name)
-  );
-  console.log(stock);
-  console.log(transactions);
+  const transactions = useSelector((state) => state.transactions.transactions);
+
+  const allTrx = transactions.filter((trx) => trx.name === stock.name);
 
   return (
     <View style={GlobalStyles.container}>
+      <View style={styles.formElem}>
+        <Text style={styles.text}>Name</Text>
+        <Text style={styles.text}>{stock.name}</Text>
+      </View>
       <View style={styles.flexRow}>
         <View style={styles.formElem2}>
-          <Text style={styles.text}>Name</Text>
-          <Text style={styles.text}>{stock.name}</Text>
+          <Text style={styles.text}>Avg. price</Text>
+          <Text style={styles.text}>{stock.avg.toLocaleString("en-IN")}</Text>
         </View>
         <View style={styles.formElem2}>
           <Text style={styles.text}>Investment value</Text>
-          <Text style={styles.text}>{stock.inv.toLocaleString()}</Text>
+          <Text style={styles.text}>{stock.inv.toLocaleString("en-IN")}</Text>
         </View>
       </View>
       <View style={styles.flexRow}>
@@ -62,7 +64,7 @@ export default StockDetails = () => {
           paddingBottom: 20,
         }}
       >
-        {transactions.map((entry) => (
+        {allTrx.map((entry) => (
           <TransactionCard
             name={entry.name}
             date={entry.date}

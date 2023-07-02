@@ -25,7 +25,7 @@ export const adjustPortfolio = (trxPayload) => {
           .then((response) => console.log("NEW STOCK ADDED"))
           .catch((error) => console.log(error));
       } else {
-        calculatePL(response[0], a);
+        calculatePL(response[0], trxPayload);
       }
     })
     .catch((error) => console.log(error));
@@ -43,7 +43,12 @@ const calculatePL = (current, trx) => {
     let avgSellAmt = trx.netAmt / +trx.qty;
     let newQty = current.quantity - +trx.qty;
     let plDiff;
-    plDiff = +current.pl + avgSellAmt * +trx.qty;
+    let isProfit = avgSellAmt > current.avg;
+    if (isProfit) {
+      plDiff = +current.pl + avgSellAmt * +trx.qty;
+    } else {
+      plDiff = +current.pl - avgSellAmt * +trx.qty;
+    }
     updatePortfolioPL(current.id, newQty, plDiff)
       .then((response) => console.log(response))
       .catch((error) => console.log(error));

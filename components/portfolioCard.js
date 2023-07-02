@@ -6,7 +6,7 @@ export default PortfolioCard = ({ name, avg, qty, pl }) => {
   const navigation = useNavigation();
 
   const pressHandler = () => {
-    let obj = { name, quantity: qty, inv: +qty * +avg, pl };
+    let obj = { name, quantity: qty, inv: +qty * +avg, pl, avg };
     navigation.navigate("StockDetails", { stock: obj });
   };
 

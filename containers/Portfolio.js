@@ -11,9 +11,6 @@ export default Portfolio = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [portfolio, setPortfolio] = useState([]);
-  const { transactions, stockNames } = useSelector(
-    (state) => state.transactions
-  );
 
   useEffect(() => {
     async function fetchData() {
