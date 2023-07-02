@@ -71,7 +71,7 @@ export const Home = () => {
             navigation.navigate("AllTransactions");
           }}
         />
-        <CustomButton title="Add new" onPress={addHandler} />
+        <CustomButton title="Add new transaction" onPress={addHandler} />
       </View>
       <Text style={styles.title}>Recent transactions</Text>
       <ScrollView

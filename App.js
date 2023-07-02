@@ -20,6 +20,7 @@ import { GlobalColors } from "./global/colors";
 import { AddStock } from "./containers/AddStock";
 import { DbActions } from "./containers/DbActions";
 import StockDetails from "./containers/StockDetails";
+import FAQ from "./containers/FAQs";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,9 +37,13 @@ const DrawerNav = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen
+        name="MainHome"
+        component={Home}
+        options={{ title: "Home" }}
+      />
       <Drawer.Screen name="Portfolio" component={Portfolio} />
-      <Drawer.Screen name="DB-Actions" component={DbActions} />
+      {/* <Drawer.Screen name="DB-Actions" component={DbActions} /> */}
     </Drawer.Navigator>
   );
 };
@@ -76,11 +81,11 @@ export default function App() {
               title: "Welcome!",
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="ProfileSelection"
             component={ProfileSelection}
             options={{ title: "" }}
-          />
+          /> */}
           <Stack.Screen
             name="Home"
             component={DrawerNav}
@@ -119,6 +124,7 @@ export default function App() {
               animation: "slide_from_right",
             }}
           />
+          <Stack.Screen name="FAQ" component={FAQ} />
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>

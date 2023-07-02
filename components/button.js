@@ -13,7 +13,18 @@ export default CustomButton = ({ onPress, title }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: GlobalColors.secondary, padding: 10, borderRadius: 10, width:150, alignItems: 'center' },
+  container: {
+    backgroundColor: GlobalColors.secondary,
+    padding: 10,
+    borderRadius: 10,
+    width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   pressed: { backgroundColor: "#12448a" },
-  text: { color: "white", fontSize:16 },
+  text: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
