@@ -14,7 +14,8 @@ export function init() {
         quantity INTEGER NOT NULL,
         net REAL NOT NULL,
         tax REAL NOT NULL,
-        brokerage REAL NOT NULL);`,
+        brokerage REAL NOT NULL,
+        pl REAL);`,
         [],
         (_, result) => resolve(result),
         (_, error) => console.log("error")
@@ -70,7 +71,8 @@ export const addTransaction = (payload) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) =>
       tx.executeSql(
-        `INSERT INTO TRANSACTIONS (name, type, date, quantity, net, tax, brokerage) VALUES (?,?,?,?,?,?,?)`,
+        `INSERT INTO TRANSACTIONS (name, type, date, quantity, net, tax, brokerage, pl) 
+        VALUES (?,?,?,?,?,?,?,?)`,
         [
           payload.name,
           payload.type,
@@ -79,6 +81,7 @@ export const addTransaction = (payload) => {
           payload.netAmt,
           payload.taxAmt,
           payload.brokerage,
+          payload.pl ? payload.pl : null,
         ],
         (_, result) => resolve("SUCCESS"),
         (_, error) => reject(error)

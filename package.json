@@ -29,6 +29,7 @@
     "react-native-reanimated": "2.14.4",
     "react-native-safe-area-context": "^4.6.3",
     "react-native-screens": "^3.22.0",
+    "react-native-table-component": "^1.2.2",
     "react-redux": "^8.1.1",
     "redux": "^4.2.1",
     "uuidv4": "^6.2.13"

@@ -51,12 +51,26 @@ export const Add = () => {
         brokerage,
       };
 
-      await addTransaction(payload)
+      // await addTransaction(payload)
+      //   .then((response) => {
+      //     Alert.alert("Success", "Transaction added successfully", [
+      //       { text: "OK", onPress: () => navigation.navigate("Home") },
+      //     ]);
+      //     adjustPortfolio(payload);
+      //   })
+      //   .catch((error) => {
+      //     Alert.alert(
+      //       "Failed",
+      //       "Failure in submission. Please try again after some time",
+      //       [{ text: "OK", onPress: () => navigation.navigate("Home") }]
+      //     );
+      //   });
+
+      await adjustPortfolio(payload)
         .then((response) => {
           Alert.alert("Success", "Transaction added successfully", [
             { text: "OK", onPress: () => navigation.navigate("Home") },
           ]);
-          adjustPortfolio(payload);
         })
         .catch((error) => {
           Alert.alert(
@@ -91,7 +105,7 @@ export const Add = () => {
     if (
       availableQty !== undefined &&
       checked === "sell" &&
-      qty > availableQty
+      +qty > +availableQty
     ) {
       Alert.alert(
         "Insufficient stocks",
@@ -106,7 +120,7 @@ export const Add = () => {
       Alert.alert("Error", `You have no shares of ${name} to sell yet`);
       err = { ...err, type: true };
     }
-    if (taxAmt + brokerage > totalAmt) {
+    if (+taxAmt + +brokerage > +totalAmt) {
       Alert.alert(
         "Error",
         "Sum of tax and brokerage cannot exceed total transaction amount"

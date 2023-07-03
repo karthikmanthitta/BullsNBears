@@ -10,6 +10,7 @@ import { Home } from "./containers/Home";
 import { Add } from "./containers/Add";
 import { TransactionDetails } from "./containers/TransactionDetails";
 import { Provider } from "react-redux";
+import { Provider as PaperProvider } from "react-native-paper";
 import store from "./store/store";
 import { dropPortfolioTable, dropTrxTable, init } from "./db/database";
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ import { AddStock } from "./containers/AddStock";
 import { DbActions } from "./containers/DbActions";
 import StockDetails from "./containers/StockDetails";
 import FAQ from "./containers/FAQs";
+import PLReport from "./containers/PLReport";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +45,12 @@ const DrawerNav = () => {
         options={{ title: "Home" }}
       />
       <Drawer.Screen name="Portfolio" component={Portfolio} />
-      {/* <Drawer.Screen name="DB-Actions" component={DbActions} /> */}
+      <Drawer.Screen
+        name="P&LReport"
+        component={PLReport}
+        options={{ title: "P&L Report" }}
+      />
+      <Drawer.Screen name="DB-Actions" component={DbActions} />
     </Drawer.Navigator>
   );
 };
@@ -61,71 +68,73 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style="light" />
       <Provider store={store}>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#0b2447",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-            headerTitleAlign: "center",
-            animation: "fade_from_bottom",
-          }}
-        >
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
-            options={{
-              title: "Welcome!",
+        <PaperProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#0b2447",
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+              headerTitleAlign: "center",
+              animation: "fade_from_bottom",
             }}
-          />
-          {/* <Stack.Screen
+          >
+            <Stack.Screen
+              name="Welcome"
+              component={Welcome}
+              options={{
+                title: "Welcome!",
+              }}
+            />
+            {/* <Stack.Screen
             name="ProfileSelection"
             component={ProfileSelection}
             options={{ title: "" }}
           /> */}
-          <Stack.Screen
-            name="Home"
-            component={DrawerNav}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Add"
-            component={Add}
-            options={{ title: "Add Transaction" }}
-          />
-          <Stack.Screen
-            name="AddStock"
-            component={AddStock}
-            options={{ title: "Add Stock" }}
-          />
-          <Stack.Screen
-            name="AllTransactions"
-            component={AllTransactions}
-            options={{ title: "All Transactions" }}
-          />
-          <Stack.Screen
-            name="TransDetails"
-            component={TransactionDetails}
-            options={{
-              title: "Transacation Details",
-              animation: "slide_from_right",
-            }}
-          />
-          <Stack.Screen
-            name="StockDetails"
-            component={StockDetails}
-            options={{
-              title: "Stock Details",
-              animation: "slide_from_right",
-            }}
-          />
-          <Stack.Screen name="FAQ" component={FAQ} />
-        </Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={DrawerNav}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Add"
+              component={Add}
+              options={{ title: "Add Transaction" }}
+            />
+            <Stack.Screen
+              name="AddStock"
+              component={AddStock}
+              options={{ title: "Add Stock" }}
+            />
+            <Stack.Screen
+              name="AllTransactions"
+              component={AllTransactions}
+              options={{ title: "All Transactions" }}
+            />
+            <Stack.Screen
+              name="TransDetails"
+              component={TransactionDetails}
+              options={{
+                title: "Transacation Details",
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="StockDetails"
+              component={StockDetails}
+              options={{
+                title: "Stock Details",
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen name="FAQ" component={FAQ} />
+          </Stack.Navigator>
+        </PaperProvider>
       </Provider>
     </NavigationContainer>
   );

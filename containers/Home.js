@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { setTransactions, setStockNames } from "../store/transaction";
 import { fetchStocks, fetchTransactions } from "../db/database";
 import { useIsFocused } from "@react-navigation/native";
-import { adjustPortfolio } from "../utils/calc";
 
 export const Home = () => {
   const [recentTrx, setRecentTrx] = useState([]);
@@ -32,7 +31,6 @@ export const Home = () => {
 
     if (isFocused) {
       fetchData();
-      // adjustPortfolio({})
     }
   }, [isFocused]);
 
