@@ -4,14 +4,13 @@ import {
   View,
   TextInput,
   ScrollView,
-  Pressable,
   Alert,
 } from "react-native";
 import { GlobalStyles } from "../global/styles";
 import { GlobalColors } from "../global/colors";
 import { useState } from "react";
 import CustomButton from "../components/button";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { addStock } from "../db/database";
 
 export const AddStock = () => {
@@ -19,6 +18,7 @@ export const AddStock = () => {
   const [name, setName] = useState("");
   const [avg, setAvg] = useState("");
   const [qty, setQty] = useState();
+  const [pl, setPL] = useState();
   const [error, setError] = useState({});
 
   async function addStockHandler() {
@@ -27,6 +27,7 @@ export const AddStock = () => {
         name: name.toUpperCase(),
         qty,
         avg,
+        pl,
       };
 
       await addStock(payload)
@@ -81,7 +82,7 @@ export const AddStock = () => {
         />
       </View>
       <View style={styles.formElem}>
-        <Text style={styles.text}>Average</Text>
+        <Text style={styles.text}>Average price per share</Text>
         <TextInput
           style={[
             styles.input,
@@ -93,7 +94,7 @@ export const AddStock = () => {
         />
       </View>
       <View style={styles.formElem}>
-        <Text style={styles.text}>Quantity</Text>
+        <Text style={styles.text}>Number of shares</Text>
         <TextInput
           style={[
             styles.input,
@@ -101,6 +102,18 @@ export const AddStock = () => {
           ]}
           value={qty}
           onChangeText={(text) => setQty(text)}
+          keyboardType="number-pad"
+        />
+      </View>
+      <View style={styles.formElem}>
+        <Text style={styles.text}>Current P&L</Text>
+        <Text style={[styles.text, { fontSize: 14 }]}>
+          Please enter (-) in case of negative value
+        </Text>
+        <TextInput
+          style={styles.input}
+          value={pl}
+          onChangeText={(text) => setPL(text)}
           keyboardType="number-pad"
         />
       </View>

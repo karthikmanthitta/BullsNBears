@@ -96,8 +96,8 @@ export const addStock = (payload) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) =>
       tx.executeSql(
-        `INSERT INTO PORTFOLIO (name, quantity, avg) VALUES (?,?,?)`,
-        [payload.name, payload.qty, payload.avg],
+        `INSERT INTO PORTFOLIO (name, quantity, avg, pl) VALUES (?,?,?,?)`,
+        [payload.name, payload.qty, payload.avg, payload.pl],
         (_, result) => resolve("SUCCESS"),
         (_, error) => reject(error)
       )

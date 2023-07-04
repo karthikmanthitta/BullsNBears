@@ -82,14 +82,14 @@ async function calculatePL(current, trx) {
   return promise;
 }
 
-const getTotalBuySellAmt = (type, pl, net, qty) => {
+export const getTotalBuySellAmt = (type, pl, net, qty) => {
   let totalSellAmt = net;
-  let totalBuyAmt;
+  let totalBuyAmt = net;
   if (type.toUpperCase() === "SELL") {
     if (pl > 0) {
       totalBuyAmt = totalSellAmt - pl;
     } else {
-      totalBuyAmt = totalSellAmt + pl;
+      totalBuyAmt = totalSellAmt + -pl;
     }
     return [totalBuyAmt / +qty, totalSellAmt / +qty];
   } else {

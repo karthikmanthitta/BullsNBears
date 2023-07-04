@@ -261,7 +261,7 @@ export const Add = () => {
           </View>
         </View>
         <View style={styles.formElem2}>
-          <Text style={styles.text}>Quantity</Text>
+          <Text style={styles.text}>Number of shares</Text>
           <TextInput
             style={[
               styles.input,
