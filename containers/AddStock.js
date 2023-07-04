@@ -79,6 +79,7 @@ export const AddStock = () => {
           ]}
           value={name}
           onChangeText={(text) => setName(text)}
+          selectionColor="white"
         />
       </View>
       <View style={styles.formElem}>
@@ -91,6 +92,7 @@ export const AddStock = () => {
           value={avg}
           onChangeText={(text) => setAvg(text)}
           keyboardType="number-pad"
+          selectionColor="white"
         />
       </View>
       <View style={styles.formElem}>
@@ -103,6 +105,7 @@ export const AddStock = () => {
           value={qty}
           onChangeText={(text) => setQty(text)}
           keyboardType="number-pad"
+          selectionColor="white"
         />
       </View>
       <View style={styles.formElem}>
@@ -115,6 +118,7 @@ export const AddStock = () => {
           value={pl}
           onChangeText={(text) => setPL(text)}
           keyboardType="number-pad"
+          selectionColor="white"
         />
       </View>
       <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>

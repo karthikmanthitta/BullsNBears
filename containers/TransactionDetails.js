@@ -18,7 +18,7 @@ export const TransactionDetails = () => {
   };
 
   return (
-    <View style={GlobalStyles.container}>
+    <View style={[GlobalStyles.container, { paddingHorizontal: 30 }]}>
       <View style={styles.formElem}>
         <Text style={styles.text}>Name</Text>
         <Text style={styles.text}>{transaction.name}</Text>
@@ -64,16 +64,6 @@ export const TransactionDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    borderColor: GlobalColors.secondary,
-    width: "100%",
-    height: 40,
-    backgroundColor: GlobalColors.purple,
-    color: "white",
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    flex: 1,
-  },
   formElem: { marginTop: 20, width: "100%" },
   formElem2: { marginTop: 20, width: "50%" },
   flexRow: {

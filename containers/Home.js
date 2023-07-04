@@ -61,7 +61,7 @@ export const Home = () => {
   };
 
   return (
-    <View style={[GlobalStyles.container, {}]}>
+    <View style={GlobalStyles.container}>
       <View style={styles.buttons}>
         <CustomButton
           title="All transactions"
@@ -99,6 +99,6 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
   title: { textAlign: "center", fontSize: 18, fontWeight: 600, marginTop: 10 },
-  buttons: { flexDirection: "row", gap: 30 },
+  buttons: { flexDirection: "row", gap: 30, justifyContent: "space-around" },
   test: { marginTop: 40 },
 });

@@ -96,3 +96,59 @@ export const getTotalBuySellAmt = (type, pl, net, qty) => {
     return [totalBuyAmt / +qty, 0];
   }
 };
+
+export const prepareDataObj = (data) => {
+  let finalObj = [];
+  data.forEach((entry) => {
+    finalObj.push({ label: entry.name, value: entry.name });
+  });
+  return finalObj;
+};
+
+export const applyPredefinedPeriodFilter = (data, period) => {
+  let final = data;
+  let curr = new Date();
+  switch (period) {
+    case "today":
+      final = final.filter(
+        (entry) => new Date(entry.date).toDateString() === curr.toDateString()
+      );
+      break;
+    case "week":
+      let first = curr.getDate() - curr.getDay();
+      let last = first + 6;
+
+      let firstday = new Date(curr.setDate(first)).toUTCString();
+      let lastday = new Date(curr.setDate(last)).toUTCString();
+
+      final = final.filter(
+        (entry) =>
+          new Date(entry.date) >= new Date(firstday) &&
+          new Date(entry.date) <= new Date(lastday)
+      );
+      break;
+    case "month":
+      final = final.filter(
+        (entry) => new Date(entry.date).getMonth() === curr.getMonth()
+      );
+      break;
+    case "year":
+      final = final.filter(
+        (entry) => new Date(entry.date).getFullYear() === curr.getFullYear()
+      );
+      break;
+  }
+
+  return final;
+};
+
+export const applyCustomPeriodFilter = (data, start, end) => {
+  let final = data;
+  final = final.filter(
+    (entry) =>
+      new Date(entry.date) >= new Date(start) &&
+      new Date(entry.date) <= new Date(end)
+  );
+
+  return final;
+};

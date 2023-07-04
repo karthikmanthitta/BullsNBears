@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Dimensions,
 } from "react-native";
 import { GlobalStyles } from "../global/styles";
 import { GlobalColors } from "../global/colors";
@@ -149,8 +150,10 @@ export const Add = () => {
         <Text style={styles.text}>Name</Text>
         <AutocompleteInput
           inputContainerStyle={{ borderColor: GlobalColors.light }}
+          selectionColor="white"
           style={[
             styles.input,
+            { paddingLeft: 10 },
             name !== "" &&
               nameList.length !== 0 && {
                 borderBottomRightRadius: 0,
@@ -202,7 +205,7 @@ export const Add = () => {
             ]}
           >
             <Text style={{ textDecorationLine: "underline", color: "blue" }}>
-              Select date
+              {showCalendar ? "Close" : "Select date"}
             </Text>
           </Pressable>
           <TextInput
@@ -213,10 +216,13 @@ export const Add = () => {
         </View>
         {showCalendar && (
           <View
-            style={{ backgroundColor: GlobalColors.primary, marginTop: 20 }}
+            style={{
+              backgroundColor: GlobalColors.primary,
+              marginTop: 20,
+            }}
           >
             <CalendarPicker
-              width={350}
+              width={Dimensions.get("window").width - 40}
               onDateChange={(date) => {
                 setDate(new Date(date).toDateString());
                 setShowCalendar(false);
@@ -270,6 +276,7 @@ export const Add = () => {
             value={qty}
             onChangeText={(text) => setQty(text)}
             keyboardType="number-pad"
+            selectionColor="white"
           />
         </View>
       </View>
@@ -283,6 +290,7 @@ export const Add = () => {
           value={totalAmt}
           onChangeText={(text) => setTotalAmt(text)}
           keyboardType="decimal-pad"
+          selectionColor="white"
         />
       </View>
       <View style={styles.flexRow}>
@@ -297,6 +305,7 @@ export const Add = () => {
             value={taxAmt}
             onChangeText={(text) => setTaxAmt(text)}
             keyboardType="decimal-pad"
+            selectionColor="white"
           />
         </View>
         <View style={styles.formElem2}>
@@ -309,6 +318,7 @@ export const Add = () => {
             value={brokerage}
             onChangeText={(text) => setBrokerage(text)}
             keyboardType="decimal-pad"
+            selectionColor="white"
           />
         </View>
       </View>
@@ -319,7 +329,14 @@ export const Add = () => {
           </Text>
         </View>
       )}
-      <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          gap: 20,
+          marginTop: 60,
+          justifyContent: "space-around",
+        }}
+      >
         <CustomButton
           title="Cancel"
           onPress={() => {

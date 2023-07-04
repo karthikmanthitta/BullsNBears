@@ -15,40 +15,46 @@ export default StockDetails = () => {
 
   return (
     <View style={GlobalStyles.container}>
-      <View style={styles.formElem}>
-        <Text style={styles.text}>Name</Text>
-        <Text style={styles.text}>{stock.name}</Text>
-      </View>
-      <View style={styles.flexRow}>
-        <View style={styles.formElem2}>
-          <Text style={styles.text}>Avg. price</Text>
-          <Text style={styles.text}>{stock.avg.toLocaleString("en-IN")}</Text>
+      <View style={{ paddingHorizontal: 30 }}>
+        <View style={styles.formElem}>
+          <Text style={styles.text}>Name</Text>
+          <Text style={styles.text}>{stock.name}</Text>
         </View>
-        <View style={styles.formElem2}>
-          <Text style={styles.text}>Investment value</Text>
-          <Text style={styles.text}>{stock.inv.toLocaleString("en-IN")}</Text>
+        <View style={styles.flexRow}>
+          <View style={styles.formElem2}>
+            <Text style={styles.text}>Avg. price</Text>
+            <Text style={styles.text}>{stock.avg.toLocaleString("en-IN")}</Text>
+          </View>
+          <View style={styles.formElem2}>
+            <Text style={styles.text}>Investment value</Text>
+            <Text style={styles.text}>{stock.inv.toLocaleString("en-IN")}</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.flexRow}>
-        <View style={styles.formElem2}>
-          <Text style={styles.text}>Quantity</Text>
-          <Text style={styles.text}>{stock.quantity}</Text>
-        </View>
-        <View style={styles.formElem2}>
-          <Text style={styles.text}>P&L</Text>
-          <Text
-            style={{
-              color:
-                stock.pl !== null ? (stock.pl > 0 ? "green" : "red") : "black",
-              fontSize: 18,
-              fontWeight: 500,
-              alignSelf: "flex-start",
-            }}
-          >
-            {stock.pl === null || stock.pl === 0
-              ? 0
-              : stock.pl.toLocaleString("en-IN")}
-          </Text>
+        <View style={styles.flexRow}>
+          <View style={styles.formElem2}>
+            <Text style={styles.text}>Quantity</Text>
+            <Text style={styles.text}>{stock.quantity}</Text>
+          </View>
+          <View style={styles.formElem2}>
+            <Text style={styles.text}>P&L</Text>
+            <Text
+              style={{
+                color:
+                  stock.pl !== null
+                    ? stock.pl > 0
+                      ? "green"
+                      : "red"
+                    : "black",
+                fontSize: 18,
+                fontWeight: 500,
+                alignSelf: "flex-start",
+              }}
+            >
+              {stock.pl === null || stock.pl === 0
+                ? 0
+                : stock.pl.toLocaleString("en-IN")}
+            </Text>
+          </View>
         </View>
       </View>
       <View>
@@ -84,16 +90,6 @@ export default StockDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    borderColor: GlobalColors.secondary,
-    width: "100%",
-    height: 40,
-    backgroundColor: GlobalColors.purple,
-    color: "white",
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    flex: 1,
-  },
   formElem: { marginTop: 20, width: "100%" },
   formElem2: { marginTop: 20, width: "50%" },
   flexRow: {
