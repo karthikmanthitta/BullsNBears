@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
     alignSelf: "flex-start",
+    fontFamily: "ubuntu-reg",
   },
 });

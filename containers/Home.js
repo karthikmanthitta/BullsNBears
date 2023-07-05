@@ -98,7 +98,13 @@ export const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  title: { textAlign: "center", fontSize: 18, fontWeight: 600, marginTop: 10 },
+  title: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: 600,
+    marginTop: 10,
+    fontFamily: "ubuntu-bold",
+  },
   buttons: { flexDirection: "row", gap: 30, justifyContent: "space-around" },
   test: { marginTop: 40 },
 });

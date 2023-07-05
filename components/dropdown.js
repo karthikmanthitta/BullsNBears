@@ -3,18 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { GlobalColors } from "../global/colors";
 
-const datas = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
-
-const DropdownComponent = ({ label, val, data, onChange }) => {
+const DropdownComponent = ({
+  label,
+  val,
+  data,
+  onChange,
+  reset,
+  disableReset,
+}) => {
   const [value, setValue] = useState(val);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -28,6 +24,13 @@ const DropdownComponent = ({ label, val, data, onChange }) => {
     }
     return null;
   };
+
+  useEffect(() => {
+    if (reset) {
+      setValue("");
+      disableReset();
+    }
+  }, [reset]);
 
   return (
     <View style={styles.container}>
@@ -53,7 +56,7 @@ const DropdownComponent = ({ label, val, data, onChange }) => {
           setValue(item.value);
           setIsFocus(false);
         }}
-        itemTextStyle={{ color: "white" }}
+        itemTextStyle={{ color: "white", fontFamily: "ubuntu-reg" }}
         containerStyle={{ backgroundColor: GlobalColors.primary }}
         activeColor={GlobalColors.purple}
       />
@@ -88,12 +91,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "white",
     borderRadius: 10,
+    fontFamily: "ubuntu-reg",
   },
   placeholderStyle: {
     fontSize: 16,
+    fontFamily: "ubuntu-reg",
   },
   selectedTextStyle: {
     fontSize: 16,
+    fontFamily: "ubuntu-reg",
   },
   iconStyle: {
     width: 20,
@@ -103,5 +109,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
     color: "white",
+    fontFamily: "ubuntu-reg",
   },
 });

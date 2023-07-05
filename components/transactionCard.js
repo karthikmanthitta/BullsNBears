@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     color: "white",
     padding: 10,
     fontSize: 16,
+    fontFamily: "ubuntu-reg",
   },
   pressed: { backgroundColor: "#12448a" },
   chip: { marginRight: 10 },

@@ -22,7 +22,7 @@ const Welcome = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>About Bulls N Bears</Text>
+      <Text style={[styles.text, styles.title]}>About Bulls N Bears</Text>
       <Text style={styles.text}>
         A simple app created to track your portfolio. All you need to do is make
         an entry for every transaction carried out with the appropriate details.
@@ -95,6 +95,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 600,
     marginVertical: 10,
+    fontFamily: "ubuntu-reg",
   },
+  title: { fontSize: 22, fontFamily: "ubuntu-bold" },
   flexRow: { flexDirection: "row" },
 });

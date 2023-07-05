@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 export default FAQ = () => {
   const navigation = useNavigation();
   return (
-    <View style={GlobalStyles.container}>
+    <View style={[GlobalStyles.container, { gap: 25 }]}>
       <View>
         <Text style={styles.title}>Where do I add a new transaction?</Text>
         <Text style={styles.text}>
@@ -49,7 +49,17 @@ export default FAQ = () => {
 };
 
 const styles = StyleSheet.create({
-  text: { color: GlobalColors.primary, fontSize: 16, fontWeight: 400 },
-  title: { color: GlobalColors.primary, fontSize: 18, fontWeight: 600 },
+  text: {
+    color: GlobalColors.primary,
+    fontSize: 16,
+    fontWeight: 400,
+    fontFamily: "ubuntu-reg",
+  },
+  title: {
+    color: GlobalColors.primary,
+    fontSize: 18,
+    fontWeight: 600,
+    fontFamily: "ubuntu-bold",
+  },
   hyperlink: { textDecorationLine: "underline", color: "blue" },
 });

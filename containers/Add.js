@@ -52,21 +52,6 @@ export const Add = () => {
         brokerage,
       };
 
-      // await addTransaction(payload)
-      //   .then((response) => {
-      //     Alert.alert("Success", "Transaction added successfully", [
-      //       { text: "OK", onPress: () => navigation.navigate("Home") },
-      //     ]);
-      //     adjustPortfolio(payload);
-      //   })
-      //   .catch((error) => {
-      //     Alert.alert(
-      //       "Failed",
-      //       "Failure in submission. Please try again after some time",
-      //       [{ text: "OK", onPress: () => navigation.navigate("Home") }]
-      //     );
-      //   });
-
       await adjustPortfolio(payload)
         .then((response) => {
           Alert.alert("Success", "Transaction added successfully", [
@@ -204,7 +189,13 @@ export const Add = () => {
               },
             ]}
           >
-            <Text style={{ textDecorationLine: "underline", color: "blue" }}>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                color: "blue",
+                fontFamily: "ubuntu-reg",
+              }}
+            >
               {showCalendar ? "Close" : "Select date"}
             </Text>
           </Pressable>
@@ -355,6 +346,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
     alignSelf: "flex-start",
+    fontFamily: "ubuntu-reg",
   },
   input: {
     width: "100%",
@@ -364,6 +356,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     flex: 1,
+    fontFamily: "ubuntu-reg",
   },
   formElem: { marginTop: 20, width: "100%" },
   formElem2: { marginTop: 20, width: "50%" },

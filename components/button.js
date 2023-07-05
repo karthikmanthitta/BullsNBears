@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     textAlign: "center",
+    fontFamily: "ubuntu-reg",
   },
 });

@@ -23,6 +23,7 @@ import {
 import CustomButton from "../components/button";
 import { RadioButton } from "react-native-paper";
 import CalendarPicker from "react-native-calendar-picker";
+import { useIsFocused } from "@react-navigation/native";
 
 const period = [
   { label: "Today", value: "today" },
@@ -32,18 +33,19 @@ const period = [
 ];
 
 const types = [
-  { label: "All", value: "all" },
+  { label: "All", value: "" },
   { label: "Buy", value: "buy" },
   { label: "Sell", value: "sell" },
 ];
 
 export default PLReport = () => {
+  const isFocused = useIsFocused();
   const transactions = useSelector((state) => state.transactions.transactions);
   const stockNames = useSelector((state) => state.transactions.stockNames);
   const [tableData, setTableData] = useState(transactions);
   const [selectedName, setSelectedName] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
-  const [selectedType, setSelectedType] = useState("all");
+  const [selectedType, setSelectedType] = useState("");
   const [checked, setChecked] = useState("pre");
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDay, setStartDay] = useState(new Date().toDateString());
@@ -51,6 +53,14 @@ export default PLReport = () => {
   const [trxCount, setTrxCount] = useState();
   const [trxAmt, setTrxAmt] = useState();
   const [pl, setPL] = useState();
+  const [reset, setReset] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      setTableData(transactions);
+    }
+  }, [isFocused]);
+
   const tableHead = [
     "Name",
     "Date",
@@ -84,7 +94,7 @@ export default PLReport = () => {
     if (selectedName.length !== 0) {
       finalData = finalData.filter((data) => data.name === selectedName);
     }
-    if (selectedType !== "all") {
+    if (selectedType !== "") {
       finalData = applyTypeFilter(finalData, selectedType);
     }
     if (selectedPeriod.length !== 0 && checked === "pre") {
@@ -99,9 +109,14 @@ export default PLReport = () => {
   const clearFilters = () => {
     setSelectedName("");
     setSelectedPeriod("");
-    setSelectedType("all");
+    setSelectedType("");
     resetPeriodParams();
+    setReset(true);
     setTableData(transactions);
+  };
+
+  const disableReset = () => {
+    setReset(false);
   };
 
   const calculateMetrics = () => {
@@ -130,6 +145,7 @@ export default PLReport = () => {
       setEndDay("");
     } else {
       setEndDay(new Date(date).toDateString());
+      setShowCalendar(false);
     }
   };
 
@@ -152,12 +168,16 @@ export default PLReport = () => {
           data={prepareDataObj(stockNames)}
           val={selectedName}
           onChange={(name) => setSelectedName(name)}
+          reset={reset}
+          disableReset={disableReset}
         />
         <DropdownComponent
           label="Type"
           data={types}
           val={selectedType}
           onChange={(type) => setSelectedType(type)}
+          reset={reset}
+          disableReset={disableReset}
         />
         <View style={styles.flexRow}>
           <View style={[styles.flexRow, { alignItems: "center" }]}>
@@ -191,6 +211,8 @@ export default PLReport = () => {
             data={period}
             val={selectedPeriod}
             onChange={(period) => setSelectedPeriod(period)}
+            reset={reset}
+            disableReset={disableReset}
           />
         ) : (
           <>
@@ -208,6 +230,7 @@ export default PLReport = () => {
                   textDecorationLine: "underline",
                   color: "blue",
                   textAlign: "center",
+                  fontFamily: "ubuntu-reg",
                 }}
               >
                 {showCalendar ? "Close" : "Select date range"}
@@ -218,7 +241,7 @@ export default PLReport = () => {
                 <CalendarPicker
                   width={Dimensions.get("window").width - 40}
                   onDateChange={handleDateChange}
-                  textStyle={{ color: "white" }}
+                  textStyle={{ color: "white", fontFamily: "ubuntu-reg" }}
                   selectedDayColor="white"
                   selectedDayTextColor={GlobalColors.primary}
                   todayBackgroundColor={GlobalColors.purple}
@@ -229,7 +252,7 @@ export default PLReport = () => {
             </View>
             <View style={styles.flexRow}>
               <View style={styles.formElem2}>
-                <Text style={{ textAlign: "left" }}>From</Text>
+                <Text style={[styles.text, { textAlign: "left" }]}>From</Text>
                 <TextInput
                   style={styles.input}
                   value={new Date(startDay).toDateString()}
@@ -237,7 +260,7 @@ export default PLReport = () => {
                 />
               </View>
               <View style={styles.formElem2}>
-                <Text style={{ textAlign: "left" }}>To</Text>
+                <Text style={[styles.text, { textAlign: "left" }]}>To</Text>
                 <TextInput
                   style={styles.input}
                   value={new Date(endDay).toDateString()}
@@ -365,11 +388,13 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     fontWeight: 400,
+    fontFamily: "ubuntu-reg",
   },
   headerText: {
     color: "white",
     textAlign: "center",
     fontWeight: 600,
+    fontFamily: "ubuntu-reg",
   },
   dataWrapper: {
     marginTop: -1,
@@ -380,8 +405,9 @@ const styles = StyleSheet.create({
   },
   header: {
     fontWeight: 600,
-    fontSize: 16,
+    fontSize: 20,
     textAlign: "center",
+    fontFamily: "ubuntu-bold",
   },
   flexRow: {
     flexDirection: "row",
@@ -393,7 +419,8 @@ const styles = StyleSheet.create({
     color: "white",
     borderRadius: 10,
     paddingLeft: 10,
+    fontFamily: "ubuntu-reg",
   },
   formElem2: { marginTop: 20, width: "50%", paddingHorizontal: 5 },
-  metricsText: { fontSize: 16 },
+  metricsText: { fontSize: 16, fontFamily: "ubuntu-reg" },
 });

@@ -70,7 +70,6 @@ async function calculatePL(current, trx) {
       }
       updatePortfolioPL(current.id, newQty, plDiff)
         .then((response) => {
-          console.log(response);
           addTransaction({ ...trx, pl: isProfit ? trxPL : -trxPL })
             .then((response) => resolve(response))
             .catch((error) => reject(error));

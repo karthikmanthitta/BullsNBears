@@ -121,7 +121,14 @@ export const AddStock = () => {
           selectionColor="white"
         />
       </View>
-      <View style={{ flexDirection: "row", gap: 20, marginTop: 60 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          gap: 20,
+          marginTop: 60,
+          justifyContent: "space-around",
+        }}
+      >
         <CustomButton
           title="Cancel"
           onPress={() => {
@@ -140,6 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
     alignSelf: "flex-start",
+    fontFamily: "ubuntu-reg",
   },
   input: {
     width: "100%",
@@ -149,6 +157,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     flex: 1,
+    fontFamily: "ubuntu-reg",
   },
   formElem: { marginTop: 20, width: "100%" },
   formElem2: { marginTop: 20, width: "50%" },
