@@ -129,7 +129,9 @@ export const applyPredefinedPeriodFilter = (data, period) => {
       break;
     case "month":
       final = final.filter(
-        (entry) => new Date(entry.date).getMonth() === curr.getMonth()
+        (entry) =>
+          new Date(entry.date).getMonth() === curr.getMonth() &&
+          new Date(entry.date).getFullYear() === curr.getFullYear()
       );
       break;
     case "year":
@@ -148,6 +150,15 @@ export const applyCustomPeriodFilter = (data, start, end) => {
     (entry) =>
       new Date(entry.date) >= new Date(start) &&
       new Date(entry.date) <= new Date(end)
+  );
+
+  return final;
+};
+
+export const applyTypeFilter = (data, type) => {
+  let final = data;
+  final = final.filter(
+    (entry) => entry.type.toUpperCase() === type.toUpperCase()
   );
 
   return final;

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../components/button";
 import { GlobalStyles } from "../global/styles";
@@ -21,7 +21,7 @@ const Welcome = () => {
   }, []);
 
   return (
-    <View style={[GlobalStyles.container, styles.container]}>
+    <View style={styles.container}>
       <Text style={styles.text}>About Bulls N Bears</Text>
       <Text style={styles.text}>
         A simple app created to track your portfolio. All you need to do is make
@@ -54,10 +54,19 @@ const Welcome = () => {
           </Text>
         </>
       )}
-      <Text style={[styles.text, { width: "100%" }]}>
+      <Text style={styles.text}>
         You may visit the FAQs section anytime for help.
       </Text>
-      <View style={[styles.flexRow, { gap: 20 }]}>
+      <View
+        style={[
+          styles.flexRow,
+          {
+            gap: 20,
+            justifyContent: "space-around",
+            marginVertical: 10,
+          },
+        ]}
+      >
         <CustomButton
           onPress={() => navigation.navigate("FAQ")}
           title="FAQs and Setup"
@@ -76,7 +85,16 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    padding: 20,
+    width: Dimensions.get("window").width,
+    backgroundColor: GlobalColors.light,
+    flex: 1,
   },
-  text: { color: GlobalColors.primary, fontSize: 18, fontWeight: 600 },
+  text: {
+    color: GlobalColors.primary,
+    fontSize: 18,
+    fontWeight: 600,
+    marginVertical: 10,
+  },
   flexRow: { flexDirection: "row" },
 });

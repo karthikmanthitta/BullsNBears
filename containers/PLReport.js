@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,6 +16,7 @@ import DropdownComponent from "../components/dropdown";
 import {
   applyCustomPeriodFilter,
   applyPredefinedPeriodFilter,
+  applyTypeFilter,
   getTotalBuySellAmt,
   prepareDataObj,
 } from "../utils/calc";
@@ -30,28 +31,41 @@ const period = [
   { label: "This year", value: "year" },
 ];
 
+const types = [
+  { label: "All", value: "all" },
+  { label: "Buy", value: "buy" },
+  { label: "Sell", value: "sell" },
+];
+
 export default PLReport = () => {
   const transactions = useSelector((state) => state.transactions.transactions);
   const stockNames = useSelector((state) => state.transactions.stockNames);
   const [tableData, setTableData] = useState(transactions);
   const [selectedName, setSelectedName] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("");
+  const [selectedType, setSelectedType] = useState("all");
   const [checked, setChecked] = useState("pre");
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDay, setStartDay] = useState(new Date().toDateString());
   const [endDay, setEndDay] = useState(new Date().toDateString());
+  const [trxCount, setTrxCount] = useState();
+  const [trxAmt, setTrxAmt] = useState();
+  const [pl, setPL] = useState();
   const tableHead = [
     "Name",
     "Date",
+    "Type",
     "Total Buy Amt",
     "Total Sell Amt",
     "No. of shares",
     "P&L",
   ];
 
-  const widthArr = [160, 160, 90, 90, 60, 90];
+  const widthArr = [160, 160, 90, 90, 90, 60, 90];
 
-  const pl = (data) => {
+  useEffect(() => calculateMetrics(), [tableData]);
+
+  const plCalc = (data) => {
     return (
       <Text
         style={{
@@ -70,6 +84,9 @@ export default PLReport = () => {
     if (selectedName.length !== 0) {
       finalData = finalData.filter((data) => data.name === selectedName);
     }
+    if (selectedType !== "all") {
+      finalData = applyTypeFilter(finalData, selectedType);
+    }
     if (selectedPeriod.length !== 0 && checked === "pre") {
       finalData = applyPredefinedPeriodFilter(finalData, selectedPeriod);
     }
@@ -77,6 +94,27 @@ export default PLReport = () => {
       finalData = applyCustomPeriodFilter(finalData, startDay, endDay);
     }
     setTableData(finalData);
+  };
+
+  const clearFilters = () => {
+    setSelectedName("");
+    setSelectedPeriod("");
+    setSelectedType("all");
+    resetPeriodParams();
+    setTableData(transactions);
+  };
+
+  const calculateMetrics = () => {
+    let count = tableData.length;
+    let amt = 0;
+    let pl = 0;
+    tableData.forEach((entry) => {
+      amt += +entry.net;
+      pl += +entry.pl;
+    });
+    setTrxCount(count);
+    setTrxAmt(amt);
+    setPL(pl);
   };
 
   const resetPeriodParams = () => {
@@ -101,6 +139,7 @@ export default PLReport = () => {
         backgroundColor: GlobalColors.light,
         paddingHorizontal: 15,
         gap: 10,
+        paddingBottom: 15,
       }}
       style={{ backgroundColor: GlobalColors.light }}
     >
@@ -113,6 +152,12 @@ export default PLReport = () => {
           data={prepareDataObj(stockNames)}
           val={selectedName}
           onChange={(name) => setSelectedName(name)}
+        />
+        <DropdownComponent
+          label="Type"
+          data={types}
+          val={selectedType}
+          onChange={(type) => setSelectedType(type)}
         />
         <View style={styles.flexRow}>
           <View style={[styles.flexRow, { alignItems: "center" }]}>
@@ -205,62 +250,100 @@ export default PLReport = () => {
         <View
           style={{
             display: "flex",
-            alignItems: "flex-end",
+            flexDirection: "row",
+            justifyContent: "space-around",
             marginVertical: 20,
           }}
         >
+          <CustomButton title="Clear filters" onPress={clearFilters} />
           <CustomButton title="Apply filters" onPress={applyFilters} />
         </View>
       </View>
       <View>
         <Text style={styles.header}>Overview</Text>
-      </View>
-      <View style={styles.container}>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{ borderColor: "#C1C0B9" }}>
-              <Row
-                data={tableHead}
-                widthArr={widthArr}
-                style={styles.head}
-                textStyle={styles.headerText}
-              />
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{ borderColor: "#C1C0B9" }}>
-                {tableData.map((trx, index) => (
-                  <Row
-                    key={index}
-                    data={[
-                      trx.name,
-                      trx.date,
-                      getTotalBuySellAmt(
-                        trx.type,
-                        trx.pl,
-                        trx.net,
-                        trx.quantity
-                      )[0] * trx.quantity,
-                      getTotalBuySellAmt(
-                        trx.type,
-                        trx.pl,
-                        trx.net,
-                        trx.quantity
-                      )[1] * trx.quantity,
-                      trx.quantity,
-                      pl(trx.pl),
-                    ]}
-                    widthArr={widthArr}
-                    style={[
-                      styles.row,
-                      index % 2 && { backgroundColor: "#ffffff" },
-                    ]}
-                    textStyle={styles.text}
-                  />
-                ))}
-              </Table>
-            </ScrollView>
+        {trxCount ? (
+          <>
+            <View style={{ marginVertical: 10 }}>
+              <Text style={styles.metricsText}>
+                Total transaction amount for selected period
+              </Text>
+              <Text style={styles.metricsText}>
+                {trxAmt.toLocaleString("en-IN")}
+              </Text>
+            </View>
+            <View style={{ marginVertical: 10 }}>
+              <Text style={styles.metricsText}>
+                Total transactions carried out
+              </Text>
+              <Text style={styles.metricsText}>{trxCount}</Text>
+            </View>
+            <View style={{ marginVertical: 10 }}>
+              <Text style={styles.metricsText}>Total P&L for the period</Text>
+              <Text
+                style={[
+                  styles.metricsText,
+                  { color: pl > 0 ? "green" : pl === 0 ? "black" : "red" },
+                ]}
+              >
+                {pl.toLocaleString("en-IN")}
+              </Text>
+            </View>
+            <View style={[styles.container, { marginVertical: 10 }]}>
+              <ScrollView horizontal={true}>
+                <View>
+                  <Table borderStyle={{ borderColor: "#C1C0B9" }}>
+                    <Row
+                      data={tableHead}
+                      widthArr={widthArr}
+                      style={styles.head}
+                      textStyle={styles.headerText}
+                    />
+                  </Table>
+                  <ScrollView style={styles.dataWrapper}>
+                    <Table borderStyle={{ borderColor: "#C1C0B9" }}>
+                      {tableData.map((trx, index) => (
+                        <Row
+                          key={index}
+                          data={[
+                            trx.name,
+                            trx.date,
+                            trx.type.toUpperCase(),
+                            getTotalBuySellAmt(
+                              trx.type,
+                              trx.pl,
+                              trx.net,
+                              trx.quantity
+                            )[0] * trx.quantity,
+                            getTotalBuySellAmt(
+                              trx.type,
+                              trx.pl,
+                              trx.net,
+                              trx.quantity
+                            )[1] * trx.quantity,
+                            trx.quantity,
+                            plCalc(trx.pl),
+                          ]}
+                          widthArr={widthArr}
+                          style={[
+                            styles.row,
+                            index % 2 && { backgroundColor: "#ffffff" },
+                          ]}
+                          textStyle={styles.text}
+                        />
+                      ))}
+                    </Table>
+                  </ScrollView>
+                </View>
+              </ScrollView>
+            </View>
+          </>
+        ) : (
+          <View style={{ marginVertical: 10 }}>
+            <Text style={{ textAlign: "center" }}>
+              No data found for selected period!
+            </Text>
           </View>
-        </ScrollView>
+        )}
       </View>
     </ScrollView>
   );
@@ -312,4 +395,5 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   formElem2: { marginTop: 20, width: "50%", paddingHorizontal: 5 },
+  metricsText: { fontSize: 16 },
 });
