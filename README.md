@@ -21,3 +21,10 @@ You may start as a newbie or migrate your existing portfolio and subsequent tran
 
 1. React Native using EXPO for UI development.
 2. Android SQLite as a database. 
+
+---
+---
+
+_You may find the latest APK build link in the About section of this repository_
+
+_All historical builds can be found under **/builds** folder_
