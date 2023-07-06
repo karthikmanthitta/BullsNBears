@@ -1,4 +1,7 @@
 # **<span style='color:green;'>Bulls</span> N <span style='color:#EE4B2B;'>Bears</span>**
+<!-- ![logo](./assets/icon.png) -->
+<img src="./assets//icon.png" alt="Logo" width=40% height=40%>
+
 
 A simple mobile app created to track your stock market portfolio. All you need to do is make an entry for every transaction carried out with the appropriate details.
 
