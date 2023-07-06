@@ -33,7 +33,7 @@ const Welcome = () => {
       </Text>
       {portfolio.length === 0 && (
         <>
-          <Text style={[styles.text, { width: "100%" }]}>
+          <Text style={styles.text}>
             If you have an existing portfolio, please enter all details{" "}
             <Text
               style={[
@@ -48,7 +48,7 @@ const Welcome = () => {
             </Text>
             .
           </Text>
-          <Text style={[styles.text, { width: "100%" }]}>
+          <Text style={styles.text}>
             If you don't have an existing portfolio, let's start by recording
             your first transaction.
           </Text>

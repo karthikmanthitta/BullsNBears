@@ -3,7 +3,7 @@ import Card from "../components/card";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../global/styles";
-import { profiles } from "../dummy";
+// import { profiles } from "../dummy";
 
 const ProfileSelection = () => {
   const navigation = useNavigation();
